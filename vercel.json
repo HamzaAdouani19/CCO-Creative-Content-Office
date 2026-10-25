@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/branding", "destination": "/index.html" },
+    { "source": "/motion", "destination": "/index.html" },
+    { "source": "/development", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" }
+  ]
+}

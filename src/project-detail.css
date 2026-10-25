@@ -1,0 +1,438 @@
+/* ===== Case study detail (scroll animated) ===== */
+.pd-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #f4f2ec;
+  color: #1d1e1a;
+  animation: pd-in 0.35s ease both;
+}
+@keyframes pd-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pd-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 1002;
+  pointer-events: none;
+}
+.pd-progress-bar {
+  height: 100%;
+  background: var(--c2, #d7ff3f);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.pd-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  height: 68px;
+  padding: 0 clamp(22px, 6.2vw, 100px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  mix-blend-mode: difference;
+  color: #fff;
+}
+.pd-topbar-mark,
+.pd-label,
+.pd-hero-meta,
+.pd-slide figcaption {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+.pd-close,
+.pd-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  padding: 10px 15px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.pd-back:hover {
+  background: #1d1e1a;
+  color: #fff;
+}
+
+.pd-page {
+  width: 100%;
+}
+
+/* HERO */
+.pd-hero {
+  padding-top: 68px;
+}
+.pd-hero-head {
+  padding: clamp(50px, 9vw, 130px) clamp(22px, 6.2vw, 100px) 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.pd-hero-title {
+  margin: 0;
+  font-size: clamp(60px, 12vw, 190px);
+  line-height: 0.88;
+  letter-spacing: -0.08em;
+  font-weight: 800;
+}
+.pd-hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.pd-hero-line > span {
+  display: block;
+}
+.pd-hero-sub {
+  font-size: clamp(16px, 1.8vw, 24px);
+  line-height: 1.5;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  max-width: 560px;
+  margin-top: 22px;
+  color: #55574f;
+}
+.pd-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pd-hero-meta > span {
+  border: 1px solid rgba(29, 30, 26, 0.3);
+  border-radius: 30px;
+  padding: 8px 12px;
+}
+.pd-hero-stage {
+  height: clamp(320px, 88vh, 900px);
+  overflow: hidden;
+  background: #d4d1c8;
+  will-change: clip-path;
+}
+.pd-hero-img {
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  display: block;
+  margin-top: -10%;
+}
+
+/* SECTIONS */
+.pd-section {
+  padding: clamp(70px, 11vw, 160px) clamp(22px, 6.2vw, 100px);
+}
+.pd-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 8vw;
+  align-items: start;
+}
+.pd-h {
+  margin: 0;
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 1;
+  letter-spacing: -0.075em;
+  font-weight: 700;
+}
+.pd-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+}
+.pd-mask > span {
+  display: block;
+}
+.pd-copy {
+  margin: 0;
+  max-width: 520px;
+  font-size: clamp(17px, 1.9vw, 26px);
+  line-height: 1.55;
+  letter-spacing: -0.03em;
+}
+.pd-word {
+  display: inline;
+}
+
+/* full-bleed parallax image */
+.pd-bleed {
+  height: clamp(300px, 80vh, 820px);
+  overflow: hidden;
+  position: relative;
+  background: #d4d1c8;
+  will-change: clip-path;
+}
+.pd-bleed img {
+  position: absolute;
+  left: 0;
+  top: -12%;
+  width: 100%;
+  height: 124%;
+  object-fit: cover;
+  display: block;
+}
+
+/* DARK / VISUAL WORLD */
+.pd-dark {
+  background: var(--c1, #1b1d18);
+  color: #f4f2ec;
+  will-change: clip-path;
+}
+.pd-dark .pd-copy {
+  color: #f4f2ec;
+}
+.pd-label {
+  margin: 0 0 28px;
+  opacity: 0.6;
+}
+.pd-palette-wrap {
+  padding: 0 clamp(22px, 6.2vw, 100px) clamp(60px, 9vw, 130px);
+}
+.pd-palette {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.pd-swatch {
+  height: clamp(130px, 22vw, 320px);
+  margin-bottom: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.pd-colour strong,
+.pd-colour span {
+  display: block;
+}
+.pd-colour strong {
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.pd-colour span {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  opacity: 0.6;
+}
+.pd-type {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8vw;
+  align-items: center;
+  padding-top: 0;
+}
+.pd-type-sample {
+  font-size: clamp(110px, 20vw, 280px);
+  line-height: 0.7;
+  letter-spacing: -0.13em;
+  font-weight: 800;
+  will-change: transform;
+}
+.pd-type-sample span {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--c3);
+}
+.pd-type-copy {
+  max-width: 360px;
+  line-height: 1.8;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* EXECUTION + HORIZONTAL GALLERY */
+.pd-exec {
+  padding-bottom: clamp(40px, 6vw, 80px);
+}
+.pd-hscroll {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #f4f2ec;
+}
+.pd-track {
+  display: flex;
+  gap: clamp(16px, 2.5vw, 36px);
+  padding: 0 clamp(22px, 6.2vw, 100px);
+  width: max-content;
+  will-change: transform;
+}
+.pd-slide {
+  margin: 0;
+  flex: 0 0 auto;
+  width: min(62vw, 880px);
+  height: min(72vh, 620px);
+  position: relative;
+  overflow: hidden;
+  background: #d4d1c8;
+}
+.pd-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.pd-slide figcaption {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  color: #fff;
+  mix-blend-mode: difference;
+}
+.pd-slide-mark {
+  width: min(40vw, 520px);
+  background: var(--c1);
+  color: #f4f2ec;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  text-align: center;
+}
+.pd-slide-mark span {
+  width: 80px;
+  height: 80px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 40px;
+}
+.pd-slide-mark strong {
+  font-size: clamp(36px, 5vw, 70px);
+  letter-spacing: -0.08em;
+}
+.pd-slide-mark sup {
+  font-size: 14px;
+}
+
+/* shorter bleed + logo variations */
+.pd-bleed-short {
+  height: clamp(260px, 62vh, 660px);
+}
+.pd-logos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.4vw, 20px);
+  padding: 0 clamp(22px, 6.2vw, 100px) clamp(60px, 8vw, 110px);
+}
+.pd-logo-tile {
+  aspect-ratio: 205 / 332;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+.pd-logo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* DELIVERABLES */
+.pd-deliverable-list {
+  border-top: 1px solid rgba(29, 30, 26, 0.2);
+}
+.pd-deliverable {
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: 60px 1fr 24px;
+  gap: 15px;
+  align-items: center;
+  border-bottom: 1px solid rgba(29, 30, 26, 0.2);
+}
+.pd-deliverable span {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  opacity: 0.55;
+}
+.pd-deliverable strong {
+  font-size: clamp(18px, 2.4vw, 32px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+/* NEXT PROJECT */
+.pd-next {
+  background: #1b1d18;
+  color: #f4f2ec;
+  padding: clamp(60px, 9vw, 120px) 0 60px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+.pd-next .pd-label {
+  margin: 0;
+}
+.pd-next-btn {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  width: 100%;
+}
+.pd-next-name {
+  display: block;
+  white-space: nowrap;
+  font-size: clamp(70px, 16vw, 260px);
+  line-height: 1;
+  letter-spacing: -0.09em;
+  font-weight: 800;
+  transition: color 0.3s;
+}
+.pd-next-btn:hover .pd-next-name {
+  color: var(--c3, #d7ff3f);
+}
+.pd-next .pd-back:hover {
+  background: #f4f2ec;
+  color: #1d1e1a;
+}
+
+/* MOBILE: no pin, gallery scrolls natively */
+@media (max-width: 760px) {
+  .pd-two,
+  .pd-type {
+    grid-template-columns: 1fr;
+    row-gap: 28px;
+  }
+  .pd-palette {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 12px;
+  }
+  .pd-hscroll {
+    height: auto;
+    padding: 20px 0 60px;
+    overflow-x: auto;
+  }
+  .pd-slide {
+    width: 80vw;
+    height: 56vh;
+  }
+  .pd-slide-mark {
+    width: 60vw;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pd-overlay {
+    animation: none;
+  }
+}
