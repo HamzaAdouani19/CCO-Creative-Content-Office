@@ -3,6 +3,7 @@ import { ArrowUpRight, Code2, Clapperboard, Palette, ShieldCheck, ExternalLink, 
 import BrandingPage from "./BrandingPage.jsx";
 import logo from "./assets/logo-cco.svg";
 import { deleteProject, getAdminProjects, getPublishedProjects, getSession, isSupabaseConfigured, saveProject, signIn, signOut } from "./lib/supabaseRest.js";
+import { safeHref } from "./lib/validation.js";
 import "./portfolio.css";
 
 const categories = {
@@ -48,12 +49,12 @@ function CategoryPage({ category }) {
       {error && <div className="cco-notice cco-error">{error}</div>}
       {loading ? <p className="cco-empty">Loading projects…</p> : projects.length ? <div className="cco-project-grid">
         {projects.map((p, i) => <article className="cco-managed-card" key={p.id}>
-          <div className="cco-managed-image">{p.cover_image ? <img src={p.cover_image} alt={p.title} loading="lazy"/> : <div className="cco-image-placeholder"><Icon size={42}/><span>CCO / {meta.label.toUpperCase()}</span></div>}<span className="cco-card-number">{String(i+1).padStart(2,"0")} / {category.toUpperCase()}</span></div>
+          <div className="cco-managed-image">{safeHref(p.cover_image) ? <img src={safeHref(p.cover_image)} alt={p.title} loading="lazy"/> : <div className="cco-image-placeholder"><Icon size={42}/><span>CCO / {meta.label.toUpperCase()}</span></div>}<span className="cco-card-number">{String(i+1).padStart(2,"0")} / {category.toUpperCase()}</span></div>
           <div className="cco-managed-meta"><div><h2>{p.title}</h2><p>{p.description}</p></div><span>{p.year || "PROJECT"}</span></div>
           <div className="cco-card-links">
-            {p.project_url && <a href={p.project_url} target="_blank" rel="noreferrer">View project <ExternalLink size={15}/></a>}
-            {p.github_url && <a href={p.github_url} target="_blank" rel="noreferrer"><Github size={15}/> Source</a>}
-            {p.video_url && <a href={p.video_url} target="_blank" rel="noreferrer"><Play size={15}/> Watch</a>}
+            {safeHref(p.project_url) && <a href={safeHref(p.project_url)} target="_blank" rel="noreferrer">View project <ExternalLink size={15}/></a>}
+            {safeHref(p.github_url) && <a href={safeHref(p.github_url)} target="_blank" rel="noreferrer"><Github size={15}/> Source</a>}
+            {safeHref(p.video_url) && <a href={safeHref(p.video_url)} target="_blank" rel="noreferrer"><Play size={15}/> Watch</a>}
           </div>
         </article>)}
       </div> : !error && <div className="cco-empty"><span>Nothing published here. Yet.</span><p>New projects will appear here after they are added and published in the admin workspace.</p></div>}

@@ -41,6 +41,15 @@ Routes:
 - Public portfolio routes use database content once Supabase is configured. Branding's existing case studies are retained as the current static portfolio; newly CMS-managed branding projects are stored in the CMS, while the existing case studies remain part of the original page.
 - Contact form currently opens the visitor's email app. It is not a server-side form processor and should not be described as secure lead capture until a backend/email service and spam protection are connected.
 
+## Tests and quality checks
+```bash
+npm test        # Vitest: REST client, validation, public pages, and database RLS/migration tests (PGlite)
+npm run lint    # ESLint
+```
+- `tests/rls.test.js` runs `supabase/schema.sql` and `supabase/migrations/*.sql` on an in-process Postgres and checks what anonymous visitors, ordinary signed-in users and admins can do. It validates the SQL files, not your deployed project.
+- To verify the **deployed** Supabase project, paste `supabase/verify/rls_checks.sql` into the SQL Editor (read-only; write probes are rolled back).
+- After `schema.sql`, apply migrations in `supabase/migrations/` in order.
+
 ## Build
 ```bash
 npm run build

@@ -1,3 +1,5 @@
+import { buildProjectPayload } from "./validation.js";
+
 const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 const TOKEN_KEY = "cco_admin_session";
@@ -110,17 +112,7 @@ export async function getAdminProjects() {
 
 export async function saveProject(project) {
   const editing = Boolean(project.id);
-  const payload = {
-    title: String(project.title || "").trim(),
-    category: project.category,
-    description: String(project.description || "").trim(),
-    cover_image: project.cover_image || null,
-    project_url: project.project_url || null,
-    github_url: project.github_url || null,
-    video_url: project.video_url || null,
-    year: project.year || null,
-    is_published: Boolean(project.is_published),
-  };
+  const payload = buildProjectPayload(project);
   if (editing) {
     return api(`/rest/v1/projects?id=eq.${encodeURIComponent(project.id)}`, {
       method: "PATCH",
