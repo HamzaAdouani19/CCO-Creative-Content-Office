@@ -1,8 +1,8 @@
 import { buildProjectPayload } from "./validation.js";
 import { getCategoryDbSlug } from "../config/projectCategories.js";
 
-const SUPABASE_URL = (import.meta.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/\/$/, "");
-const SUPABASE_ANON_KEY = import.meta.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "";
+const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 const TOKEN_KEY = "cco_admin_session";
 
 export function isSupabaseConfigured() {
@@ -11,7 +11,7 @@ export function isSupabaseConfigured() {
 
 function requireConfig() {
   if (!isSupabaseConfigured()) {
-    throw new Error("Supabase is not configured yet. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY to your .env file.");
+    throw new Error("Supabase is not configured yet. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your .env file.");
   }
 }
 
