@@ -23,13 +23,13 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-const validProject = { title: "  Demo  ", category: "motion", description: "d", year: "2026", is_published: true };
+const validProject = { title: "  Demo  ", category: "motion-design", description: "d", year: "2026", is_published: true };
 
 describe("configuration", () => {
   it("reports unconfigured and returns no projects without calling the network", async () => {
     const api = await load({});
     expect(api.isSupabaseConfigured()).toBe(false);
-    await expect(api.getPublishedProjects("motion")).resolves.toEqual([]);
+    await expect(api.getPublishedProjects("motion-graphics")).resolves.toEqual([]);
     await expect(api.signIn("a@b.co", "pw")).rejects.toThrow(/not configured/i);
     expect(fetchMock).not.toHaveBeenCalled();
   });
@@ -39,11 +39,11 @@ describe("public reads", () => {
   it("requests only published rows, filtered by category, with the anon key and no bearer token", async () => {
     const api = await load();
     fetchMock.mockReturnValue(json([{ id: "1" }]));
-    await api.getPublishedProjects("motion");
+    await api.getPublishedProjects("motion-design");
     const [url, opts] = fetchMock.mock.calls[0];
     expect(url).toContain(`${URL_BASE}/rest/v1/projects?`);
     expect(url).toContain("is_published=eq.true");
-    expect(url).toContain("category=eq.motion");
+    expect(url).toContain("category=eq.motion-design");
     expect(opts.headers.apikey).toBe("anon-key");
     expect(opts.headers.Authorization).toBeUndefined();
   });
@@ -128,6 +128,7 @@ describe("saveProject / deleteProject", () => {
     expect(url).toBe(`${URL_BASE}/rest/v1/projects`);
     expect(opts.method).toBe("POST");
     expect(JSON.parse(opts.body)).toMatchObject({ title: "Demo", cover_image: null, project_url: "https://example.com/x", year: "2026" });
+    expect(JSON.parse(opts.body).category).toBe("motion-graphics");
   });
 
   it("PATCHes by id when editing", async () => {

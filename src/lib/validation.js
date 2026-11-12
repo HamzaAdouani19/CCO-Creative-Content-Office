@@ -1,6 +1,7 @@
 /** Input validation shared by the admin form, the REST client and public rendering. */
+import { CATEGORY_SLUGS } from "../config/projectCategories.js";
 
-export const CATEGORIES = ["branding", "motion", "development"];
+export const CATEGORIES = CATEGORY_SLUGS;
 export const LIMITS = { title: 120, description: 600 };
 
 /** True only for absolute https:// URLs. Rejects javascript:, data:, http:, relative paths. */

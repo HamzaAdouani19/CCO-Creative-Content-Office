@@ -1,5 +1,5 @@
 // @vitest-environment node
-// Runs supabase/schema.sql and migration 0002 on an in-process Postgres (PGlite) with Supabase-like roles,
+// Runs supabase/schema.sql and migrations on an in-process Postgres (PGlite) with Supabase-like roles,
 // then checks what anon, a normal signed-in user and an admin can do. This validates the SQL FILES, not the
 // deployed project — use supabase/verify/rls_checks.sql for the live database.
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
@@ -33,6 +33,11 @@ beforeAll(async () => {
     grant execute on function auth.uid() to anon, authenticated;
   `);
   await db.exec(readFileSync("supabase/schema.sql", "utf8"));
+  await db.exec(`
+    alter table public.projects drop constraint projects_category_check;
+    alter table public.projects add constraint projects_category_check
+      check (category in ('branding', 'motion', 'development'));
+  `);
   // Supabase grants table privileges to API roles by default; RLS is what restricts them.
   await db.exec(`
     grant select on public.projects to anon;
@@ -45,8 +50,10 @@ beforeAll(async () => {
     insert into public.admin_users (user_id) values ('${ADMIN}');
     insert into public.projects (id, title, category, is_published) values
       ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Public one', 'branding', true),
-      ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Draft one', 'motion', false);
+      ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Draft one', 'motion', false),
+      ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'Legacy website', 'development', false);
   `);
+  await db.exec(readFileSync("supabase/migrations/0003_project_categories.sql", "utf8"));
 });
 afterAll(async () => db?.close());
 
@@ -70,7 +77,7 @@ describe("reads", () => {
 
   it("an admin sees drafts and their own admin record", async () => {
     await as("authenticated", ADMIN, async () => {
-      expect(await count("select count(*)::int n from public.projects")).toBe(2);
+      expect(await count("select count(*)::int n from public.projects")).toBe(3);
       expect(await count("select count(*)::int n from public.admin_users")).toBe(1);
     });
   });
@@ -92,7 +99,7 @@ describe("writes", () => {
     expect(upd.rows).toHaveLength(0);
     expect(del.rows).toHaveLength(0);
     expect(await count("select count(*)::int n from public.projects where title = 'hacked'")).toBe(0);
-    expect(await count("select count(*)::int n from public.projects")).toBe(2);
+    expect(await count("select count(*)::int n from public.projects")).toBe(3);
   });
 
   it("a non-admin cannot make themselves an admin", async () => {
@@ -103,7 +110,7 @@ describe("writes", () => {
 
   it("an admin can insert, update and delete", async () => {
     await as("authenticated", ADMIN, async () => {
-      const ins = await db.query("insert into public.projects (title, category) values ('admin made', 'development') returning id");
+      const ins = await db.query("insert into public.projects (title, category) values ('admin made', 'web-development') returning id");
       const id = ins.rows[0].id;
       const upd = await db.query("update public.projects set title = 'renamed' where id = $1 returning title", [id]);
       expect(upd.rows[0].title).toBe("renamed");
@@ -118,14 +125,14 @@ describe("migration 0002", () => {
 
   it("rejects javascript:, http: and whitespace URLs and malformed years", async () => {
     for (const col of ["cover_image", "project_url", "github_url", "video_url"]) {
-      await expect(admin(`insert into public.projects (title, category, ${col}) values ('t','motion','javascript:alert(1)')`)).rejects.toThrow(/projects_urls_https_chk/);
-      await expect(admin(`insert into public.projects (title, category, ${col}) values ('t','motion','http://example.com')`)).rejects.toThrow(/projects_urls_https_chk/);
+      await expect(admin(`insert into public.projects (title, category, ${col}) values ('t','motion-graphics','javascript:alert(1)')`)).rejects.toThrow(/projects_urls_https_chk/);
+      await expect(admin(`insert into public.projects (title, category, ${col}) values ('t','motion-graphics','http://example.com')`)).rejects.toThrow(/projects_urls_https_chk/);
     }
-    await expect(admin("insert into public.projects (title, category, year) values ('t','motion','20x6')")).rejects.toThrow(/projects_year_format_chk/);
+    await expect(admin("insert into public.projects (title, category, year) values ('t','motion-graphics','20x6')")).rejects.toThrow(/projects_year_format_chk/);
   });
 
   it("accepts https URLs and a four-digit year", async () => {
-    const r = await admin("insert into public.projects (title, category, project_url, year) values ('ok','motion','https://example.com/p','2026') returning id");
+    const r = await admin("insert into public.projects (title, category, project_url, year) values ('ok','motion-graphics','https://example.com/p','2026') returning id");
     expect(r.rows).toHaveLength(1);
     await admin("delete from public.projects where id = $1", [r.rows[0].id]);
   });
@@ -143,5 +150,29 @@ describe("migration 0002", () => {
 
   it("is idempotent", async () => {
     await db.exec(readFileSync("supabase/migrations/0002_projects_hardening.sql", "utf8"));
+  });
+});
+
+describe("migration 0003", () => {
+  it("remaps legacy values without changing IDs and accepts the six categories", async () => {
+    const records = (await db.query(
+      "select id, category from public.projects where id in ($1, $2) order by id",
+      ["bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb", "cccccccc-cccc-cccc-cccc-cccccccccccc"],
+    )).rows;
+    expect(records).toEqual([
+      { id: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb", category: "motion-graphics" },
+      { id: "cccccccc-cccc-cccc-cccc-cccccccccccc", category: "web-development" },
+    ]);
+
+    await as("authenticated", ADMIN, async () => {
+      for (const category of ["branding", "social-media", "web-development", "motion-graphics", "video-production", "photography"]) {
+        await db.query("insert into public.projects (title, category) values ($1, $2)", [`category ${category}`, category]);
+      }
+      await expect(db.query("insert into public.projects (title, category) values ('legacy', 'motion')")).rejects.toThrow(/projects_category_slug_chk/);
+    });
+  });
+
+  it("is idempotent", async () => {
+    await db.exec(readFileSync("supabase/migrations/0003_project_categories.sql", "utf8"));
   });
 });

@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   ArrowUpRight,
   Code2,
-  Clapperboard,
-  Palette,
   ShieldCheck,
-  ExternalLink,
-  Github,
-  Play,
   LockKeyhole,
   LogOut,
   Plus,
@@ -17,229 +12,26 @@ import {
   EyeOff,
 } from "lucide-react";
 import BrandingPage from "./BrandingPage.jsx";
+import AboutPage from "./pages/AboutPage.jsx";
+import ServicePage from "./pages/ServicePage.jsx";
+import SiteNav from "./components/SiteNav.jsx";
 import logo from "./assets/logo-cco.svg";
+import {
+  getCategoryBySlug,
+  getCategorySlugForPath,
+  PROJECT_CATEGORIES,
+} from "./config/projectCategories.js";
 import {
   deleteProject,
   getAdminProjects,
-  getPublishedProjects,
   getSession,
   isSupabaseConfigured,
   saveProject,
   signIn,
   signOut,
 } from "./lib/supabaseRest.js";
-import { safeHref } from "./lib/validation.js";
 import "./portfolio.css";
-
-const categories = {
-  motion: {
-    label: "Motion & Video",
-    eyebrow: "02 / MOVING IMAGE",
-    title: (
-      <>
-        Stories that
-        <br />
-        <em>move people.</em>
-      </>
-    ),
-    description:
-      "Motion design, video editing, campaigns and visual stories made to hold attention.",
-    icon: Clapperboard,
-  },
-  development: {
-    label: "Development",
-    eyebrow: "03 / DIGITAL PRODUCTS",
-    title: (
-      <>
-        Built to work.
-        <br />
-        <em>Made to matter.</em>
-      </>
-    ),
-    description:
-      "Websites, digital products and applications shaped by design, engineering and real-world use.",
-    icon: Code2,
-  },
-};
-
-function SiteSwitcher({ active }) {
-  return (
-    <div className="cco-switcher">
-      <a href="/branding" className="cco-brand">
-        <img src={logo} alt="" />{" "}
-        <span>
-          CCO<small>CREATIVE CONTENT OFFICE</small>
-        </span>
-      </a>
-      <nav aria-label="Portfolio categories">
-        <a className={active === "branding" ? "active" : ""} href="/branding">
-          <Palette size={15} /> Branding
-        </a>
-        <a className={active === "motion" ? "active" : ""} href="/motion">
-          <Clapperboard size={15} /> Motion
-        </a>
-        <a
-          className={active === "development" ? "active" : ""}
-          href="/development"
-        >
-          <Code2 size={15} /> Development
-        </a>
-      </nav>
-      <a className="cco-admin-link" href="/admin">
-        <LockKeyhole size={14} /> Admin
-      </a>
-    </div>
-  );
-}
-
-function CategoryPage({ category }) {
-  const meta = categories[category];
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  useEffect(() => {
-    let alive = true;
-    getPublishedProjects(category)
-      .then((rows) => {
-        if (alive) setProjects(rows || []);
-      })
-      .catch((e) => {
-        if (alive) setError(e.message);
-      })
-      .finally(() => {
-        if (alive) setLoading(false);
-      });
-    return () => {
-      alive = false;
-    };
-  }, [category]);
-  const Icon = meta.icon;
-  return (
-    <div className="cco-portfolio">
-      <SiteSwitcher active={category} />
-      <main className="cco-category-main">
-        <div className="cco-category-kicker">
-          <span className="cco-dot" /> {meta.eyebrow}
-          <span className="cco-location">DJERBA · WORKING EVERYWHERE</span>
-        </div>
-        <div className="cco-category-hero">
-          <div>
-            <p className="cco-overline">CREATIVE WORK, WITH INTENTION</p>
-            <h1>{meta.title}</h1>
-            <p className="cco-intro">{meta.description}</p>
-          </div>
-          <div className="cco-category-stamp">
-            <Icon size={36} />
-            <span>IDEA → EXECUTION</span>
-          </div>
-        </div>
-        <div className="cco-category-rule">
-          <span>SELECTED PROJECTS</span>
-          <span>{String(projects.length).padStart(2, "0")} PROJECTS</span>
-        </div>
-        {!isSupabaseConfigured() && (
-          <div className="cco-notice">
-            Portfolio CMS is not connected yet. Configure Supabase to load and
-            manage published projects. The public page is ready for
-            configuration.
-          </div>
-        )}
-        {error && <div className="cco-notice cco-error">{error}</div>}
-        {loading ? (
-          <p className="cco-empty">Loading projects…</p>
-        ) : projects.length ? (
-          <div className="cco-project-grid">
-            {projects.map((p, i) => (
-              <article className="cco-managed-card" key={p.id}>
-                <div className="cco-managed-image">
-                  {safeHref(p.cover_image) ? (
-                    <img
-                      src={safeHref(p.cover_image)}
-                      alt={p.title}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="cco-image-placeholder">
-                      <Icon size={42} />
-                      <span>CCO / {meta.label.toUpperCase()}</span>
-                    </div>
-                  )}
-                  <span className="cco-card-number">
-                    {String(i + 1).padStart(2, "0")} / {category.toUpperCase()}
-                  </span>
-                </div>
-                <div className="cco-managed-meta">
-                  <div>
-                    <h2>{p.title}</h2>
-                    <p>{p.description}</p>
-                  </div>
-                  <span>{p.year || "PROJECT"}</span>
-                </div>
-                <div className="cco-card-links">
-                  {safeHref(p.project_url) && (
-                    <a
-                      href={safeHref(p.project_url)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      View project <ExternalLink size={15} />
-                    </a>
-                  )}
-                  {safeHref(p.github_url) && (
-                    <a
-                      href={safeHref(p.github_url)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Github size={15} /> Source
-                    </a>
-                  )}
-                  {safeHref(p.video_url) && (
-                    <a
-                      href={safeHref(p.video_url)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Play size={15} /> Watch
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : (
-          !error && (
-            <div className="cco-empty">
-              <span>Nothing published here. Yet.</span>
-              <p>
-                New projects will appear here after they are added and published
-                in the admin workspace.
-              </p>
-            </div>
-          )
-        )}
-        <section className="cco-bottom-cta">
-          <p>HAVE A PROJECT IN MIND?</p>
-          <h2>
-            Let’s make
-            <br />
-            <em>something matter.</em>
-          </h2>
-          <a
-            href={`mailto:${import.meta.env.VITE_CONTACT_EMAIL || "hello@yourdomain.com"}`}
-          >
-            Start a conversation <ArrowUpRight size={18} />
-          </a>
-        </section>
-      </main>
-      <footer className="cco-portfolio-footer">
-        <span>© {new Date().getFullYear()} CCO · CREATIVE CONTENT OFFICE</span>
-        <span>STRATEGY · DESIGN · DEVELOPMENT</span>
-        <a href="/admin">Studio access ↗</a>
-      </footer>
-    </div>
-  );
-}
+import "./pages/site.css";
 
 const emptyProject = {
   title: "",
@@ -367,7 +159,8 @@ function AdminPage() {
               Email address
               <input
                 type="email"
-                autoComplete="username"
+                name="email"
+                autoComplete="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -461,9 +254,9 @@ function AdminPage() {
                       setDraft({ ...draft, category: e.target.value })
                     }
                   >
-                    <option value="branding">Branding</option>
-                    <option value="motion">Motion & video</option>
-                    <option value="development">Development</option>
+                    {PROJECT_CATEGORIES.map(({ slug, label }) => (
+                      <option key={slug} value={slug}>{label}</option>
+                    ))}
                   </select>
                 </label>
                 <label>
@@ -575,7 +368,9 @@ function AdminPage() {
                     <small>{row.year || "No year"}</small>
                   </div>
                 </div>
-                <span className="cco-category-pill">{row.category}</span>
+                <span className="cco-category-pill">
+                  {getCategoryBySlug(getCategorySlugForPath(`/${row.category}`) || row.category)?.label || row.category}
+                </span>
                 <span
                   className={
                     row.is_published ? "cco-published" : "cco-unpublished"
@@ -595,7 +390,10 @@ function AdminPage() {
                   <button
                     aria-label={`Edit ${row.title}`}
                     onClick={() => {
-                      setDraft({ ...row });
+                      setDraft({
+                        ...row,
+                        category: getCategorySlugForPath(`/${row.category}`) || row.category,
+                      });
                       setError("");
                       setMessage("");
                     }}
@@ -631,7 +429,26 @@ function AdminPage() {
 export default function App() {
   const path = window.location.pathname.replace(/\/+$/, "") || "/";
   if (path === "/admin") return <AdminPage />;
-  if (path === "/motion") return <CategoryPage category="motion" />;
-  if (path === "/development") return <CategoryPage category="development" />;
-  return <BrandingPage />;
+  if (path === "/") return <AboutPage />;
+  const slug = getCategorySlugForPath(path);
+  if (slug === "branding") return <BrandingPage />;
+  if (slug) {
+    if (path !== `/${slug}`) window.history.replaceState(null, "", `/${slug}`);
+    return <ServicePage slug={slug} />;
+  }
+  return <NotFound />;
+}
+
+function NotFound() {
+  return (
+    <div className="site-page" style={{ padding: "20vh 6vw" }}>
+      <SiteNav />
+      <h1 style={{ fontSize: "clamp(48px,10vw,140px)" }}>Page not found.</h1>
+      <p>
+        <a href="/" className="btn" style={{ marginTop: 24 }}>
+          Back to About
+        </a>
+      </p>
+    </div>
+  );
 }

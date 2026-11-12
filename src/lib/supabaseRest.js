@@ -1,4 +1,5 @@
 import { buildProjectPayload } from "./validation.js";
+import { getCategoryDbSlug } from "../config/projectCategories.js";
 
 const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
@@ -113,6 +114,7 @@ export async function getAdminProjects() {
 export async function saveProject(project) {
   const editing = Boolean(project.id);
   const payload = buildProjectPayload(project);
+  payload.category = getCategoryDbSlug(payload.category);
   if (editing) {
     return api(`/rest/v1/projects?id=eq.${encodeURIComponent(project.id)}`, {
       method: "PATCH",

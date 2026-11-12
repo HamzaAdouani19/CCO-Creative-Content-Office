@@ -6,16 +6,15 @@ import {
   ArrowRight,
   ArrowUpRight,
   Asterisk,
-  Menu,
-  X,
   Plus,
   Minus,
   MoveUpRight,
   Sparkles,
 } from "lucide-react";
-import logo from "./assets/logo-cco.svg";
 import ProjectDetail from "./Projectdetail";
+import SiteNav from "./components/SiteNav.jsx";
 import { getPublishedProjects } from "./lib/supabaseRest.js";
+import "./pages/site.css";
 
 /* Alkif images (output of crop-alkif.py → put them in src/assets/alkif/) */
 import alkifHero from "./assets/Alkif/brand alkif.png";
@@ -206,61 +205,6 @@ function Eyebrow({ children, light = false }) {
       <span className="eyebrow-dot" />
       {children}
     </p>
-  );
-}
-
-function Header() {
-  const [open, setOpen] = useState(false);
-  const close = () => setOpen(false);
-  return (
-    <header className="site-header">
-      <a
-        href="#top"
-        className="wordmark"
-        aria-label="Creative Content Office brand studio"
-      >
-        <span className="wordmark-symbol">
-          <img src={logo} alt="CCO Logo" className="wordmark-logo" />
-        </span>
-
-        <span>
-          CCO <span className="wordmark-sub">® Creative Content Office </span>
-        </span>
-      </a>
-      <nav className={`nav-links ${open ? "nav-open" : ""}`}>
-        <a href="/branding" onClick={close}>
-          Branding
-        </a>
-        <a href="/motion" onClick={close}>
-          Motion
-        </a>
-        <a href="/development" onClick={close}>
-          Development
-        </a>
-        <a href="#work" onClick={close}>
-          Work
-        </a>
-        <a href="#services" onClick={close}>
-          Services
-        </a>
-        <a href="#about" onClick={close}>
-          Studio
-        </a>
-        <a href="#faq" onClick={close}>
-          FAQs
-        </a>
-        <a href="#contact" className="nav-cta" onClick={close}>
-          Let’s talk <ArrowUpRight size={15} />
-        </a>
-      </nav>
-      <button
-        className="menu-toggle"
-        aria-label={open ? "Close menu" : "Open menu"}
-        onClick={() => setOpen(!open)}
-      >
-        {open ? <X /> : <Menu />}
-      </button>
-    </header>
   );
 }
 
@@ -544,7 +488,7 @@ export default function BrandingPage() {
 
   return (
     <div ref={heroRef} id="top" className="site-shell">
-      <Header />
+      <SiteNav active="branding" />
       <main>
         <section className="hero section-pad">
           <div className="hero-topline hero-kicker">

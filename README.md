@@ -1,6 +1,6 @@
 # CCO — Creative Content Office
 
-A React + Vite creative portfolio with separate Branding, Motion & Video, and Development routes, plus a private project-management workspace.
+A React + Vite creative portfolio with six category routes and a private project-management workspace.
 
 ## Stack
 - React 18 + Vite 6
@@ -16,13 +16,20 @@ A React + Vite creative portfolio with separate Branding, Motion & Video, and De
 
 Routes:
 - `/branding` — current branding site and case studies
-- `/motion` — published motion/video projects
-- `/development` — published website/app projects
+- `/social-media` — published social media projects
+- `/web-development` — published web design and development projects (`/development` remains an alias)
+- `/motion-graphics` — published motion graphics projects (`/motion` remains an alias)
+- `/video-production` — published video production projects
+- `/photography` — published photography projects
 - `/admin` — private CMS login and project management
+
+The shared category configuration lives in `src/config/projectCategories.js`; each public listing and the admin category selector uses the same category slugs.
 
 ## Configure the database and admin securely
 1. Create a Supabase project.
 2. In Supabase SQL Editor, run `supabase/schema.sql`.
+   - For an existing installation, apply `supabase/migrations/0003_project_categories.sql` before deploying the updated frontend. It maps `motion` to `motion-graphics` and `development` to `web-development` without changing project IDs or other fields.
+   - The migration updates only the two legacy category values and enforces the six canonical slugs. No manual cleanup is required for those existing values.
 3. In Supabase Authentication settings, disable public sign-ups if you do not need them. Create your admin user yourself from the dashboard.
 4. Copy that user's UUID from Authentication > Users and run:
    ```sql
@@ -56,4 +63,4 @@ npm run build
 npm run preview
 ```
 
-For production deployment, configure the host to serve the Vite SPA fallback for `/branding`, `/motion`, `/development`, and `/admin`. Vercel/Netlify static deployments may need a rewrite to `index.html` if their default behavior does not provide it.
+For production deployment, configure the host to serve the Vite SPA fallback for all category routes and `/admin`. Vercel rewrites are defined in `vercel.json`; retain equivalent rewrites if using another host.

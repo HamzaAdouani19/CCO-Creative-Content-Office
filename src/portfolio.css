@@ -7,9 +7,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .cco-brand img{width:36px;height:36px;object-fit:contain}
 .cco-brand span{display:flex;flex-direction:column;line-height:1}
 .cco-brand small{font:8px "DM Mono",monospace;letter-spacing:.1em;margin-top:6px;color:var(--cco-muted)}
-.cco-switcher nav{display:flex;align-items:center;gap:6px}
-.cco-switcher nav a,.cco-admin-link{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:2px;text-decoration:none;font-size:11px;font-weight:700;color:#64665d;transition:background .2s,color .2s}
-.cco-switcher nav a:hover,.cco-switcher nav a.active{background:var(--cco-acid);color:var(--cco-ink)}
+.cco-switcher nav{display:flex;align-items:center;justify-content:center;gap:3px;flex:1;max-width:min(68vw,820px);overflow-x:auto;scrollbar-width:none}
+.cco-switcher nav::-webkit-scrollbar,.cco-branding-category-strip nav::-webkit-scrollbar{display:none}
+.cco-switcher nav a,.cco-admin-link{display:flex;align-items:center;gap:8px;padding:10px 9px;border-radius:2px;text-decoration:none;font-size:9px;font-weight:700;color:#64665d;white-space:nowrap;transition:background .2s,color .2s}
+.cco-switcher nav a{text-transform:uppercase;letter-spacing:.025em}
+.cco-switcher nav a:hover,.cco-switcher nav a.active{background:var(--category-accent,var(--cco-acid));color:var(--cco-ink)}
+.cco-branding-category-strip{--category-accent:#FF5B35;padding:10px clamp(20px,5.5vw,84px);border-bottom:1px solid var(--cco-line);background:#f4f2ec;overflow:hidden}
+.cco-branding-category-strip nav{max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:3px;overflow-x:auto;scrollbar-width:none}
+.cco-branding-category-strip nav a{padding:10px 13px;color:#64665d;font-size:9px;font-weight:700;letter-spacing:.025em;text-transform:uppercase;white-space:nowrap;transition:background .2s,color .2s}
+.cco-branding-category-strip nav a:hover,.cco-branding-category-strip nav a.active{background:var(--category-accent,var(--cco-acid));color:var(--cco-ink)}
+.cco-portfolio[data-category=social-media],.cco-portfolio[data-category=motion-graphics],.cco-portfolio[data-category=photography]{--category-accent:#435BFF}
+.cco-portfolio[data-category=branding],.cco-portfolio[data-category=web-development],.cco-portfolio[data-category=video-production]{--category-accent:#FF5B35}
+.cco-dot{background:var(--category-accent,var(--cco-acid))}
+.cco-category-stamp{color:var(--category-accent,var(--cco-acid))}
 .cco-admin-link{border:1px solid var(--cco-line);color:var(--cco-ink)}
 .cco-category-main{max-width:1440px;margin:auto;padding:42px clamp(20px,6vw,92px) 0}
 .cco-category-kicker{display:flex;align-items:center;gap:10px;font:10px "DM Mono",monospace;letter-spacing:.09em;color:#62645c}
@@ -103,8 +113,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .cco-admin-note{display:flex;align-items:flex-start;gap:10px;font-size:10px;line-height:1.7;color:#73756b;margin-top:35px}
 @media(max-width:760px){
  .cco-switcher{height:auto;min-height:74px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px;gap:10px}
- .cco-switcher nav{order:3;width:100%;overflow-x:auto}
- .cco-switcher nav a{white-space:nowrap;padding:9px}
+ .cco-switcher nav{order:3;width:100%;max-width:none;justify-content:flex-start;overflow-x:auto}
+ .cco-switcher nav a{white-space:nowrap;padding:9px 8px}
  .cco-admin-link{margin-left:auto}
  .cco-category-hero{padding:70px 0;align-items:flex-start}
  .cco-category-stamp{width:92px;height:92px}.cco-category-stamp svg{width:24px}.cco-category-stamp span{font-size:6px}
@@ -127,6 +137,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
  .cco-category-stamp{margin-top:30px}
  .cco-category-hero h1{font-size:clamp(58px,15vw,78px)}
  .cco-location{display:none}
+ .cco-branding-category-strip{padding-left:12px;padding-right:12px}
+ .cco-branding-category-strip nav{justify-content:flex-start}
+ .cco-branding-category-strip nav a{padding:9px 10px}
  .cco-managed-meta{gap:12px}
  .cco-managed-meta h2{font-size:20px}
  .cco-bottom-cta{padding-top:60px;padding-bottom:65px}

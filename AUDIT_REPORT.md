@@ -4,9 +4,9 @@ The project was expanded from the original React/Vite/GSAP branding landing page
 
 ## Implemented in this package
 - Retained the original branding landing page and case studies.
-- Added `/branding`, `/motion`, `/development`, and `/admin` route handling.
-- Added responsive category portfolio pages for Motion & Video and Development.
-- Added an admin UI for creating, editing, publishing/unpublishing, and deleting projects across three categories.
+- Added six canonical category routes: `/branding`, `/social-media`, `/web-development`, `/motion-graphics`, `/video-production`, and `/photography`. The previous `/motion` and `/development` routes remain aliases.
+- Added a reusable category portfolio page and a shared category configuration/navigation component while retaining the existing Branding case studies.
+- Added an admin UI for creating, editing, publishing/unpublishing, and deleting projects across six categories.
 - Added Supabase Auth REST calls, session refresh handling, and a PostgreSQL schema with Row Level Security policies in `supabase/schema.sql`.
 - Added `.env.example`, deployment rewrites for Vercel, and setup documentation.
 - Normalized ALKIF asset import casing for case-sensitive build environments.
@@ -14,6 +14,7 @@ The project was expanded from the original React/Vite/GSAP branding landing page
 
 ## Required before production
 - Create/configure a Supabase project and run `supabase/schema.sql`.
+- For an existing Supabase installation, apply `supabase/migrations/0003_project_categories.sql` before deploying the six-category UI.
 - Create an admin user in Supabase Auth and add its UUID to `public.admin_users`.
 - Set `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, and the real `VITE_CONTACT_EMAIL` in local and deployment environment settings.
 - Test RLS using both an admin account and a normal non-admin account.

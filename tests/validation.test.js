@@ -20,8 +20,12 @@ describe("safeHref", () => {
 
 describe("buildProjectPayload", () => {
   it("enforces length limits", () => {
-    expect(() => buildProjectPayload({ title: "x".repeat(121), category: "motion" })).toThrow(/120/);
-    expect(() => buildProjectPayload({ title: "ok", category: "motion", description: "x".repeat(601) })).toThrow(/600/);
+    expect(() => buildProjectPayload({ title: "x".repeat(121), category: "motion-design" })).toThrow(/120/);
+    expect(() => buildProjectPayload({ title: "ok", category: "motion-design", description: "x".repeat(601) })).toThrow(/600/);
+  });
+  it("accepts only canonical project categories", () => {
+    expect(buildProjectPayload({ title: "ok", category: "digital-experience" }).category).toBe("digital-experience");
+    expect(() => buildProjectPayload({ title: "legacy", category: "motion" })).toThrow(/valid category/);
   });
   it("turns empty optional fields into null", () => {
     expect(buildProjectPayload({ title: "ok", category: "branding", year: "" })).toMatchObject({

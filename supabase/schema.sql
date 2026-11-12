@@ -10,7 +10,10 @@ create table if not exists public.admin_users (
 create table if not exists public.projects (
   id uuid primary key default gen_random_uuid(),
   title varchar(120) not null,
-  category text not null check (category in ('branding', 'motion', 'development')),
+  category text not null check (category in (
+    'branding', 'social-media', 'web-development',
+    'motion-graphics', 'video-production', 'photography'
+  )),
   description varchar(600) not null default '',
   cover_image text,
   project_url text,
