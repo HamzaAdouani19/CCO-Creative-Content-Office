@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Manrope", sans-serif;
+  font-family: "IBM Plex Mono", sans-serif;
   color: #171815;
   background: #f4f2ec;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --paper: #f4f2ec;
-  --ink: #171815;
-  --acid: #d7ff3f;
-  --muted: #77786f;
-  --line: rgba(23, 24, 21, 0.18);
-}
+   --paper: #F1EFE9;
+  --ink: #FF5B35;
+  --acid: #FF5B35;
+  --muted: #435BFF;
+  --line: #111315;
+} 
 * {
   box-sizing: border-box;
 }
@@ -84,7 +84,7 @@ button {
 }
 .wordmark-sub {
   display: block;
-  font-family: "DM Mono", monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 8px;
   letter-spacing: 0.09em;
   font-weight: 400;
@@ -132,7 +132,7 @@ button {
   align-items: center;
 }
 .eyebrow {
-  font-family: "DM Mono", monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -155,7 +155,7 @@ button {
 }
 .hero-location,
 .hero-foot {
-  font-family: "DM Mono", monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 9px;
   letter-spacing: 0.08em;
   color: #6f7068;
@@ -220,7 +220,7 @@ button {
   inset: 8px;
   border: 1px solid rgba(23, 24, 21, 0.28);
   border-radius: 50%;
-  font-family: "DM Mono", monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 7px;
   letter-spacing: 0.08em;
   color: rgba(23, 24, 21, 0.7);
@@ -311,7 +311,7 @@ button {
   align-items: center;
   gap: 26px;
   padding-right: 26px;
-  font-family: "DM Mono", monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
   letter-spacing: 0.09em;
   white-space: nowrap;
@@ -427,7 +427,7 @@ button {
   position: absolute;
   top: 18px;
   left: 18px;
-  font-family: "DM Mono", monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 9px;
   letter-spacing: 0.1em;
   color: white;
@@ -493,7 +493,7 @@ button {
 
 .project-meta p,
 .project-meta > span {
-  font-family: "DM Mono", monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 9px;
   letter-spacing: 0.08em;
   color: #6c6e65;
@@ -584,7 +584,7 @@ button {
   position: absolute;
   right: -22px;
   bottom: -35px;
-  color: #d7ff3f;
+  color: var(--acid);
   opacity: 0.13;
 }
 .services-section {
@@ -608,7 +608,7 @@ button {
   padding-right: 10px;
 }
 .service-number {
-  font-family: "DM Mono", monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
   color: #73756c;
 }

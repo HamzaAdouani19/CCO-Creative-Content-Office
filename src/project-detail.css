@@ -29,7 +29,7 @@
 }
 .pd-progress-bar {
   height: 100%;
-  background: var(--c2, #d7ff3f);
+  background: var(--c2, #FF5B35);
   transform: scaleX(0);
   transform-origin: left;
 }
@@ -400,7 +400,7 @@
   transition: color 0.3s;
 }
 .pd-next-btn:hover .pd-next-name {
-  color: var(--c3, #d7ff3f);
+  color: var(--c3, #FF5B35);
 }
 .pd-next .pd-back:hover {
   background: #f4f2ec;

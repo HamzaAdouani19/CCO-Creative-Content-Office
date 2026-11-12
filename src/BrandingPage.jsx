@@ -16,7 +16,7 @@ import {
 import logo from "./assets/logo-cco.svg";
 import ProjectDetail from "./Projectdetail";
 import { getPublishedProjects } from "./lib/supabaseRest.js";
- 
+
 /* Alkif images (output of crop-alkif.py → put them in src/assets/alkif/) */
 import alkifHero from "./assets/Alkif/brand alkif.png";
 import alkifSignage from "./assets/Alkif/produits.png";
@@ -30,9 +30,9 @@ import alkifPackaging from "./assets/Alkif/cup.jpg";
 import alkifUniforms from "./assets/Alkif/maillot_3.png";
 import alkifCups from "./assets/Alkif/cup.jpg";
 import alkifApron from "./assets/Alkif/cache.png";
- 
+
 gsap.registerPlugin(ScrollTrigger);
- 
+
 const projects = [
   {
     number: "01",
@@ -157,7 +157,7 @@ const projects = [
       "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1500&q=85",
   },
 ];
- 
+
 const services = [
   [
     "01",
@@ -180,7 +180,7 @@ const services = [
     "Motion principles, launch campaigns, social systems and the assets that keep you consistent.",
   ],
 ];
- 
+
 const faqs = [
   [
     "What kind of businesses do you work with?",
@@ -199,7 +199,7 @@ const faqs = [
     "Send a short note about your business, what you are working towards and your ideal timing. We will arrange an introductory conversation and recommend a clear next step.",
   ],
 ];
- 
+
 function Eyebrow({ children, light = false }) {
   return (
     <p className={`eyebrow ${light ? "eyebrow-light" : ""}`}>
@@ -208,7 +208,7 @@ function Eyebrow({ children, light = false }) {
     </p>
   );
 }
- 
+
 function Header() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
@@ -222,7 +222,7 @@ function Header() {
         <span className="wordmark-symbol">
           <img src={logo} alt="CCO Logo" className="wordmark-logo" />
         </span>
- 
+
         <span>
           CCO <span className="wordmark-sub">® Creative Content Office </span>
         </span>
@@ -263,7 +263,7 @@ function Header() {
     </header>
   );
 }
- 
+
 function ProjectCard({ project, onOpen }) {
   return (
     <button
@@ -303,7 +303,7 @@ function ProjectCard({ project, onOpen }) {
     </button>
   );
 }
- 
+
 function FAQItem({ question, answer, open, onClick }) {
   return (
     <div className={`faq-item ${open ? "faq-item-open" : ""}`}>
@@ -324,9 +324,10 @@ function FAQItem({ question, answer, open, onClick }) {
     </div>
   );
 }
- 
+
 function ContactForm() {
-  const contactEmail = import.meta.env.VITE_CONTACT_EMAIL || "hello@yourdomain.com";
+  const contactEmail =
+    import.meta.env.VITE_CONTACT_EMAIL || "hamzaadouani1919@gmail.com";
   const [status, setStatus] = useState("");
   const [form, setForm] = useState({
     name: "",
@@ -336,7 +337,7 @@ function ContactForm() {
     message: "",
   });
   const update = (e) => setForm({ ...form, [e.target.name]: e.target.value });
- 
+
   const submit = (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
@@ -352,7 +353,7 @@ function ContactForm() {
     setStatus("Your email app should open with the enquiry prepared.");
     window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
   };
- 
+
   return (
     <form className="contact-form" onSubmit={submit}>
       <div className="form-row">
@@ -425,7 +426,7 @@ function ContactForm() {
     </form>
   );
 }
- 
+
 export default function BrandingPage() {
   const heroRef = useRef(null);
   const [faqOpen, setFaqOpen] = useState(0);
@@ -446,11 +447,19 @@ export default function BrandingPage() {
       visualWorld: p.description || "A selected CCO branding project.",
       execution: p.description || "A selected CCO branding project.",
       overview: p.description || "A selected CCO branding project.",
-      palette: [{ name: "CCO Acid", hex: "#D7FF3F" }, { name: "Ink", hex: "#171815" }, { name: "Paper", hex: "#F4F2EC" }],
+      palette: [
+        { name: "CCO Acid", hex: "#D7FF3F" },
+        { name: "Ink", hex: "#171815" },
+        { name: "Paper", hex: "#F4F2EC" },
+      ],
       typography: "Defined in the project identity.",
       deliverables: ["Visual identity", "Creative direction"],
       secondaryImage: p.cover_image || alkifHero,
-      images: { hero: p.cover_image || alkifHero, discovery: p.cover_image || alkifHero, execution: [] },
+      images: {
+        hero: p.cover_image || alkifHero,
+        discovery: p.cover_image || alkifHero,
+        execution: [],
+      },
       projectUrl: p.project_url,
     })),
   ];
@@ -459,13 +468,19 @@ export default function BrandingPage() {
     [],
   );
   const [year] = useState(new Date().getFullYear());
- 
+
   useEffect(() => {
     let active = true;
     getPublishedProjects("branding")
-      .then((rows) => { if (active) setManagedBrandProjects(rows || []); })
-      .catch(() => { /* The static portfolio remains available if CMS is offline. */ });
-    return () => { active = false; };
+      .then((rows) => {
+        if (active) setManagedBrandProjects(rows || []);
+      })
+      .catch(() => {
+        /* The static portfolio remains available if CMS is offline. */
+      });
+    return () => {
+      active = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -526,7 +541,7 @@ export default function BrandingPage() {
     }, heroRef);
     return () => ctx.revert();
   }, []);
- 
+
   return (
     <div ref={heroRef} id="top" className="site-shell">
       <Header />
@@ -534,39 +549,35 @@ export default function BrandingPage() {
         <section className="hero section-pad">
           <div className="hero-topline hero-kicker">
             <Eyebrow>INDEPENDENT BRAND & DIGITAL STUDIO</Eyebrow>
-            <span className="hero-location">
-              DJERBA · WORKING EVERYWHERE
-            </span>
+            <span className="hero-location">DJERBA · WORKING EVERYWHERE</span>
           </div>
           <div className="hero-heading-wrap">
             <h1 className="hero-title">
-              <span className="hero-title-line">Make your</span>
+              <span className="hero-title-line">From Ideas</span>
               <span className="hero-title-line hero-title-second">
-                mark<span className="hero-period">.</span>
+                To Impact<span className="hero-period">.</span>
               </span>
               <span className="hero-title-line hero-outline">
-                Move forward.
+                Creative Content Office.
               </span>
             </h1>
             <div className="hero-stamp" aria-label="Strategy meets imagination">
               <div className="stamp-ring">
-                STRATEGY MEETS IMAGINATION · STRATEGY MEETS IMAGINATION ·
+                IDEAS · DESERVE · TO BE SEEN ·
               </div>
               <Sparkles size={28} strokeWidth={1.5} />
               <span>
-                GOOD
+                IDEAS
                 <br />
-                THINGS
+                DESERVE
                 <br />
-                <b>START HERE</b>
+                <b>TO BE SEEN</b>
               </span>
             </div>
           </div>
           <div className="hero-bottom">
             <p className="hero-copy">
-              We build brave brands for ambitious businesses. Strategy-first
-              thinking, distinctive design and digital experiences made to move
-              you forward.
+             We build meaningful brands and digital experiences through strategy, design, and creative thinking.
             </p>
             <div className="hero-actions">
               <a className="button button-dark" href="#work">
@@ -581,16 +592,16 @@ export default function BrandingPage() {
             <span>
               SCROLL TO EXPLORE <ArrowDownRight size={14} />
             </span>
-            <span>BRAND STRATEGY · DESIGN · DIGITAL</span>
-            <span>EST. 2020</span>
+            <span>STRATEGY · BRANDING · CREATIVE · DIGITAL</span>
+            <span>EST. 2026</span>
           </div>
         </section>
- 
+
         <section className="ticker" aria-label="Studio capabilities">
           <div className="ticker-track">
             {Array.from({ length: 2 }).map((_, i) => (
               <div className="ticker-group" key={i}>
-                <span>GOOD BRANDS CHANGE THINGS</span>
+                <span>IDEAS WITH PURPOSE</span>
                 <Asterisk />
                 <span>STRATEGY WITH SOUL</span>
                 <Asterisk />
@@ -602,7 +613,7 @@ export default function BrandingPage() {
             ))}
           </div>
         </section>
- 
+
         <section className="work-section section-pad" id="work">
           <div className="section-heading reveal">
             <div>
@@ -637,7 +648,7 @@ export default function BrandingPage() {
             </b>
           </a>
         </section>
- 
+
         <section className="manifesto-section">
           <div
             className="manifesto-image"
@@ -664,7 +675,7 @@ export default function BrandingPage() {
             </span>
           </div>
         </section>
- 
+
         <section className="services-section section-pad" id="services">
           <div className="section-heading reveal">
             <div>
@@ -698,7 +709,7 @@ export default function BrandingPage() {
             <span>Small enough to care. Experienced enough to deliver.</span>
           </div>
         </section>
- 
+
         <section className="about-section section-pad" id="about">
           <div className="about-top reveal">
             <Eyebrow>04 / A LITTLE ABOUT US</Eyebrow>
@@ -743,7 +754,7 @@ export default function BrandingPage() {
             </div>
           </div>
         </section>
- 
+
         <section className="quote-section">
           <div className="quote-symbol">
             <Asterisk size={48} />
@@ -754,7 +765,7 @@ export default function BrandingPage() {
           </blockquote>
           <p>OUR BELIEF, IN A SENTENCE</p>
         </section>
- 
+
         <section className="faq-section section-pad" id="faq">
           <div className="faq-intro reveal">
             <Eyebrow>05 / GOOD QUESTIONS</Eyebrow>
@@ -783,7 +794,7 @@ export default function BrandingPage() {
             ))}
           </div>
         </section>
- 
+
         <section className="contact-section section-pad" id="contact">
           <div className="contact-heading reveal">
             <Eyebrow light>06 / YOUR NEXT CHAPTER</Eyebrow>
@@ -796,8 +807,12 @@ export default function BrandingPage() {
               Tell us where you want to go. We’ll help you figure out how to get
               there.
             </p>
-            <a className="contact-email" href={`mailto:${import.meta.env.VITE_CONTACT_EMAIL || "hello@yourdomain.com"}`}>
-              {import.meta.env.VITE_CONTACT_EMAIL || "hello@yourdomain.com"} <MoveUpRight size={18} />
+            <a
+              className="contact-email"
+              href={`mailto:${import.meta.env.VITE_CONTACT_EMAIL || "hello@yourdomain.com"}`}
+            >
+              {import.meta.env.VITE_CONTACT_EMAIL || "hello@yourdomain.com"}{" "}
+              <MoveUpRight size={18} />
             </a>
           </div>
           <div className="contact-form-wrap reveal">
@@ -808,22 +823,28 @@ export default function BrandingPage() {
           </div>
         </section>
       </main>
- 
+
       {selectedProject && (
         <ProjectDetail
           key={selectedProject.number}
           project={selectedProject}
           nextProject={
             allProjects[
-              ((Math.max(0, allProjects.findIndex((item) => item.number === selectedProject.number)) + 1) %
-                allProjects.length)
+              (Math.max(
+                0,
+                allProjects.findIndex(
+                  (item) => item.number === selectedProject.number,
+                ),
+              ) +
+                1) %
+                allProjects.length
             ]
           }
           onClose={closeProjectDetail}
           onOpenNext={setSelectedProject}
         />
       )}
- 
+
       <footer className="site-footer">
         <a href="#top" className="wordmark footer-wordmark">
           <span className="wordmark-symbol">
@@ -840,9 +861,10 @@ export default function BrandingPage() {
           <a href="#contact">Contact</a>
           <a href="#top">Back to top ↑</a>
         </div>
-        <span className="copyright">© {year} CCO · CREATIVE CONTENT OFFICE</span>
+        <span className="copyright">
+          © {year} CCO · CREATIVE CONTENT OFFICE
+        </span>
       </footer>
     </div>
   );
 }
- 

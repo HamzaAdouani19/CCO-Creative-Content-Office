@@ -1,4 +1,4 @@
-:root{--cco-paper:#f4f2ec;--cco-ink:#171815;--cco-acid:#d7ff3f;--cco-muted:#707168;--cco-line:rgba(23,24,21,.17)}
+:root{--cco-paper:#f4f2ec;--cco-ink:#171815;--cco-acid:#FF5B35;--cco-muted:#707168;--cco-line:rgba(23,24,21,.17)}
 body{background:var(--cco-paper)}
 a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #9ab91c;outline-offset:3px}
 .cco-portfolio{min-height:100vh;background:var(--cco-paper);color:var(--cco-ink)}
