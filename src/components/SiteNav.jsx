@@ -36,9 +36,7 @@ export default function SiteNav({ active }) {
     <header className="sn" ref={ref}>
       <a href="/" className="sn-brand" aria-label="CCO Creative Content Office, home">
         <img src={logo} alt="" />
-        <span>
-          CCO<small>Creative Content Office</small>
-        </span>
+        <span className="sn-brand-name">creative <strong>content</strong> office</span>
       </a>
 
       <button
@@ -52,7 +50,7 @@ export default function SiteNav({ active }) {
 
       <nav className={`sn-links ${menu ? "is-open" : ""}`} aria-label="Main">
         <a href="/" aria-current={active === "about" ? "page" : undefined} onClick={close}>
-          About
+          Home
         </a>
 
         <div className={`sn-drop ${services ? "is-open" : ""} ${isService ? "is-active" : ""}`}>
