@@ -1,0 +1,149 @@
+diff --git a/src/components/SiteNav.jsx b/src/components/SiteNav.jsx
+index f765794..c73154d 100644
+--- a/src/components/SiteNav.jsx
++++ b/src/components/SiteNav.jsx
+@@ -36,9 +36,7 @@ export default function SiteNav({ active }) {
+     <header className="sn" ref={ref}>
+       <a href="/" className="sn-brand" aria-label="CCO Creative Content Office, home">
+         <img src={logo} alt="" />
+-        <span>
+-          CCO<small>Creative Content Office</small>
+-        </span>
++        <span className="sn-brand-name">creative <strong>content</strong> office</span>
+       </a>
+ 
+       <button
+@@ -52,7 +50,7 @@ export default function SiteNav({ active }) {
+ 
+       <nav className={`sn-links ${menu ? "is-open" : ""}`} aria-label="Main">
+         <a href="/" aria-current={active === "about" ? "page" : undefined} onClick={close}>
+-          About
++          Home
+         </a>
+ 
+         <div className={`sn-drop ${services ? "is-open" : ""} ${isService ? "is-active" : ""}`}>
+diff --git a/src/pages/AboutPage.jsx b/src/pages/AboutPage.jsx
+index cec739f..10f065f 100644
+--- a/src/pages/AboutPage.jsx
++++ b/src/pages/AboutPage.jsx
+@@ -67,17 +67,20 @@ export default function AboutPage() {
+       <SiteNav active="about" />
+       <main>
+         <section className="ab-hero">
++          <div className="ab-hero-art" aria-hidden="true">CCO</div>
++          <div className="ab-hero-glow ab-hero-glow-one" aria-hidden="true" />
++          <div className="ab-hero-glow ab-hero-glow-two" aria-hidden="true" />
+           <h1>
+             <span className="line"><span>Ideas deserve</span></span>
+-            <span className="line"><span>to be seen,</span></span>
+-            <span className="line"><span>felt and remembered.</span></span>
++            <span className="line"><span>to be <em className="ab-gradient-text">seen,</em></span></span>
++            <span className="line"><span>felt and <em className="ab-gradient-text">remembered.</em></span></span>
+           </h1>
+           <div className="ab-hero-meta">
+             <p>
+               CCO — Creative Content Office is a full-service creative agency in Djerba,
+               working with brands everywhere.
+             </p>
+-            <a href="#services" className="btn">See our services <ArrowUpRight size={16} /></a>
++            <a href="#services" className="btn ab-hero-cta">See our services <ArrowUpRight size={18} /></a>
+           </div>
+         </section>
+ 
+diff --git a/src/pages/site.css b/src/pages/site.css
+--- a/src/pages/site.css
++++ b/src/pages/site.css
+@@ -664,3 +664,93 @@
+     transition-duration: 0.01ms !important;
+   }
+ }
++
++/* CCO warm gradient identity overrides */
++.site-page {
++  --bg: #fffaf7;
++  --bg2: #fff0f4;
++  --fg: #171321;
++  --mute: #686274;
++  --line: rgba(23, 19, 33, 0.14);
++  --c: #e52c86;
++  --cco-gradient: linear-gradient(110deg, #ffb900 0%, #ff653d 24%, #f32682 55%, #a40de0 100%);
++  background: var(--bg);
++  color: var(--fg);
++  font-family: "Manrope", Arial, sans-serif;
++}
++.sn {
++  height: 88px;
++  padding: 0 clamp(22px, 5.6vw, 92px);
++  background: rgba(255, 250, 247, 0.88);
++  border-bottom-color: rgba(23, 19, 33, 0.08);
++  color: var(--fg);
++  font-family: "Manrope", Arial, sans-serif;
++}
++.sn-brand { gap: 13px; font-size: 18px; font-weight: 500; letter-spacing: -0.055em; white-space: nowrap; }
++.sn-brand img { width: 112px; height: 54px; }
++.sn-brand-name strong { font-weight: 800; }
++.sn-links { font-size: 14px; font-weight: 600; }
++.sn-links > a, .sn-drop > button { font-size: 14px; }
++.sn-links [aria-current="page"], .sn-drop.is-active > button { color: #ed347d; box-shadow: 0 2px 0 #ed347d; }
++.sn-admin {
++  border: 1px solid transparent !important;
++  border-radius: 999px;
++  background: linear-gradient(var(--bg), var(--bg)) padding-box, var(--cco-gradient) border-box;
++  padding: 10px 17px !important;
++  opacity: 1;
++}
++.sn-cta { background: var(--cco-gradient); color: #fff !important; padding: 12px 17px !important; border-radius: 999px; }
++.sn-drop ul { background: #fffaf7; box-shadow: 0 18px 50px rgba(30, 15, 35, 0.12); }
++.ab-hero {
++  position: relative;
++  isolation: isolate;
++  overflow: hidden;
++  min-height: calc(100svh - 88px);
++  padding-top: clamp(64px, 10vh, 132px) !important;
++  padding-bottom: clamp(48px, 7vh, 88px) !important;
++  background: radial-gradient(ellipse at 82% 18%, rgba(255, 95, 174, .17), transparent 35%), linear-gradient(120deg, #fffaf7 0%, #fff8f3 52%, #fff1f7 100%);
++}
++.ab-hero h1 { position: relative; z-index: 2; font-size: clamp(48px, 8.5vw, 136px); line-height: .94; letter-spacing: -.085em; margin: 0; max-width: 1400px; font-weight: 800; }
++.ab-gradient-text { font-style: normal; background: var(--cco-gradient); background-clip: text; -webkit-background-clip: text; color: transparent; }
++.ab-hero-art {
++  position: absolute; z-index: 0; right: -5vw; top: 8%;
++  font-size: clamp(280px, 43vw, 690px); font-weight: 800; letter-spacing: -.16em;
++  line-height: .8; white-space: nowrap; background: var(--cco-gradient);
++  background-clip: text; -webkit-background-clip: text; color: transparent;
++  opacity: .17; pointer-events: none; transform: rotate(-8deg);
++}
++.ab-hero-glow { position: absolute; z-index: 0; pointer-events: none; filter: blur(1px); border-radius: 50%; }
++.ab-hero-glow-one { width: 36vw; height: 36vw; right: -13vw; top: 10%; background: radial-gradient(circle, rgba(159,24,224,.18), transparent 68%); }
++.ab-hero-glow-two { width: 30vw; height: 30vw; left: -18vw; bottom: -22vw; background: radial-gradient(circle, rgba(255,174,0,.3), transparent 68%); }
++.ab-hero-meta { position: relative; z-index: 2; }
++.ab-hero-meta p { color: #363140; font-size: clamp(14px, 1.2vw, 17px); line-height: 1.8; }
++.ab-hero-cta { background: var(--cco-gradient); color: #fff; border-radius: 999px; padding: 17px 24px; min-width: 220px; justify-content: center; box-shadow: 0 12px 30px rgba(214,38,132,.15); }
++.ab-hero-cta:hover { box-shadow: 0 16px 36px rgba(214,38,132,.24); }
++.ab-who { background: #fff1f5; }
++.ab-values { background: #f4eef4; color: #171321; --line: rgba(23,19,33,.2); }
++.ab-contact { background: var(--cco-gradient); color: #171321; }
++.ab-contact .btn-light { background: #171321; color: #fffaf7; }
++.ab-social a { border-color: rgba(23,19,33,.6); }
++.ab-social a:hover { background: #171321; color: #fff; }
++.site-foot { background: #fffaf7; }
++@media (max-width: 860px) {
++  .sn { height: 76px; }
++  .sn-brand img { width: 92px; height: 46px; }
++  .sn-brand-name { font-size: 15px; }
++  .sn-links { top: 75px; }
++  .ab-hero { min-height: calc(100svh - 76px); padding-top: clamp(60px, 10vh, 100px) !important; }
++  .ab-hero h1 { font-size: clamp(46px, 10vw, 88px); }
++  .ab-hero-art { font-size: 55vw; right: -18vw; top: 18%; }
++}
++@media (max-width: 520px) {
++  .sn-brand { gap: 7px; }
++  .sn-brand img { width: 76px; height: 40px; }
++  .sn-brand-name { font-size: 13px; }
++  .ab-hero { gap: 54px; padding-top: 54px !important; padding-bottom: 38px !important; }
++  .ab-hero h1 { font-size: clamp(43px, 11.2vw, 60px); line-height: .98; letter-spacing: -.075em; }
++  .ab-hero-art { font-size: 66vw; top: 23%; right: -30vw; opacity: .12; }
++  .ab-hero-meta { align-items: flex-start; }
++  .ab-hero-meta p { max-width: 310px; }
++  .ab-hero-cta { width: 100%; justify-content: space-between; }
++}
++

@@ -1,13 +1,11 @@
+
 {
   "rewrites": [
     { "source": "/branding", "destination": "/index.html" },
     { "source": "/social-media", "destination": "/index.html" },
-    { "source": "/web-development", "destination": "/index.html" },
-    { "source": "/motion-graphics", "destination": "/index.html" },
     { "source": "/video-production", "destination": "/index.html" },
-    { "source": "/photography", "destination": "/index.html" },
-    { "source": "/motion", "destination": "/index.html" },
-    { "source": "/development", "destination": "/index.html" },
+    { "source": "/motion-design", "destination": "/index.html" },
+    { "source": "/digital-experience", "destination": "/index.html" },
     { "source": "/admin", "destination": "/index.html" }
   ]
 }
